@@ -1,14 +1,14 @@
-package domain
+package entity
 
 import (
 	"errors"
 	"time"
 
-	"github.com/LucasLCabral/go-api/pkg/domain"
+	"github.com/LucasLCabral/go-api/pkg/entity"
 )
 
 type Product struct {
-	ID        domain.ID `json:"id"`
+	ID        entity.ID `json:"id"`
 	Name      string    `json:"name"`
 	Price     float32   `json:"price"`
 	CreatedAt time.Time    `json:"created_at"`
@@ -24,7 +24,7 @@ var (
 
 func NewProduct(name string, price float32) (*Product, error) {
 	product := &Product{
-		ID: domain.NewID(),
+		ID: entity.NewID(),
 		Name: name,
 		Price: price,
 		CreatedAt: time.Now(),
@@ -41,7 +41,7 @@ func (p *Product) Validate() error {
 	if p.ID.String() == "" {
 		return ErrIDIsRequired
 	}
-	if _, err := domain.ParseID(p.ID.String()); err != nil {
+	if _, err := entity.ParseID(p.ID.String()); err != nil {
 		return ErrIDIsInvalid
 	}
 	if p.Name == "" {

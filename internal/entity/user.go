@@ -1,12 +1,12 @@
-package domain
+package entity
 
 import (
 	"golang.org/x/crypto/bcrypt"
-	"github.com/LucasLCabral/go-api/pkg/domain"
+	"github.com/LucasLCabral/go-api/pkg/entity"
 )
 
 type User struct {
-	ID       domain.ID `json:"id"`
+	ID       entity.ID `json:"id"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"-"`
@@ -19,7 +19,7 @@ func NewUser(name, email, password string) (*User, error ){
 	}
 
 	return &User{
-		ID:       domain.NewID(),
+		ID:       entity.NewID(),
 		Name:     name,
 		Email:    email,
 		Password: string(hash),
