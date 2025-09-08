@@ -12,7 +12,7 @@ func TestNewProduct(t *testing.T) {
 	assert.NotNil(t, product)
 	assert.NotEmpty(t, product.ID)
 	assert.Equal(t, "Product Zizi", product.Name)
-	assert.Equal(t, float32(10.5), product.Price)
+	assert.Equal(t, float64(10.5), product.Price)
 	assert.NotEmpty(t, product.CreatedAt)
 }
 
@@ -27,7 +27,6 @@ func TestProductWhenPriceIsRequired(t *testing.T) {
 	assert.Nil(t, product)
 	assert.Equal(t, ErrPriceIsRequired, err)
 }
-
 
 func TestProductWhenPriceIsInvalid(t *testing.T) {
 	product, err := NewProduct("Product Zizi", -10.5)

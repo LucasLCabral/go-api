@@ -10,7 +10,7 @@ import (
 type Product struct {
 	ID        entity.ID `json:"id"`
 	Name      string    `json:"name"`
-	Price     float32   `json:"price"`
+	Price     float64   `json:"price"`
 	CreatedAt time.Time    `json:"created_at"`
 }
 
@@ -22,7 +22,7 @@ var (
 	ErrPriceIsInvalid = errors.New("{error: price is invalid}")
 )
 
-func NewProduct(name string, price float32) (*Product, error) {
+func NewProduct(name string, price float64) (*Product, error) {
 	product := &Product{
 		ID: entity.NewID(),
 		Name: name,
