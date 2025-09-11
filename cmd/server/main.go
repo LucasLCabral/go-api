@@ -7,14 +7,14 @@ import (
 	"github.com/LucasLCabral/go-api/internal/entity"
 	"github.com/LucasLCabral/go-api/internal/infra/database"
 	"github.com/LucasLCabral/go-api/internal/infra/webserver/handlers"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func main() {
-	_, err := configs.LoadConfig(".")
+	configs, err := configs.LoadConfig(".")
 	if err != nil {
 		panic(err)
 	}
@@ -25,10 +25,9 @@ func main() {
 	db.AutoMigrate(&entity.Product{}, &entity.User{})
 	productDB := database.NewProduct(db)
 	productHandler := handlers.NewProductHandler(productDB)
-	
+
 	userDB := database.NewUser(db)
-	userHandler := handlers.NewUserHandler(userDB)
-	
+	userHandler := handlers.NewUserHandler(userDB, configs.TokenAuthKey, configs.JTWExpiresIn)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -39,6 +38,7 @@ func main() {
 	r.Delete("/products/{id}", productHandler.DeleteProduct)
 
 	r.Post("/users", userHandler.CreateUser)
+	r.Post("/users/login", userHandler.Login)
 
 	http.ListenAndServe(":8000", r)
 }
