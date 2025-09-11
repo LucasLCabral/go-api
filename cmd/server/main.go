@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/LucasLCabral/go-api/configs"
@@ -32,6 +33,7 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	r.Use(LogRequest )
 
 	r.Route("/products", func(r chi.Router) {
 		r.Use(jwtauth.Verifier(configs.TokenAuthKey))
@@ -48,3 +50,10 @@ func main() {
 
 	http.ListenAndServe(":8000", r)
 }
+
+// func LogRequest (next http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		log.Println(r.Method, r.RequestURI)
+// 		next.ServeHTTP(w, r)
+// 	})
+// }
