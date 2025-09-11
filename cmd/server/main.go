@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	// "log"
 	"net/http"
 
 	"github.com/LucasLCabral/go-api/configs"
@@ -33,7 +33,7 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	r.Use(LogRequest )
+	// r.Use(LogRequest)
 
 	r.Route("/products", func(r chi.Router) {
 		r.Use(jwtauth.Verifier(configs.TokenAuthKey))
