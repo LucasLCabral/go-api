@@ -1,6 +1,8 @@
 package database
 
 import (
+	"errors"
+
 	"github.com/LucasLCabral/go-api/internal/entity"
 	"gorm.io/gorm"
 )
@@ -14,7 +16,14 @@ func NewUser(db *gorm.DB) *User {
 }
 
 func (u *User) Create(user *entity.User) error {
-	return u.DB.Create(user).Error
+	_, err := u.FindByEmail(user.Email)
+	if err == nil {
+		return errors.New("user already exists")
+	}
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+        return u.DB.Create(user).Error
+    }
+	return err
 }
 
 func (u *User) FindByEmail(email string) (*entity.User, error) {
